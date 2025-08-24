@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Demo</title>
+  <link rel="shortcut icon" href="blush_nest.png" type="image/x-icon" />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
+  />
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+  <link rel="stylesheet" href="style/style.css" />
+</head>
+<body>
+  <!-- Shopping Cart Sidebar -->
+  <div id="cart-sidebar" class="cart-sidebar">
+    <div class="cart-header">
+      <h3>Your Cart</h3>
+      <button id="close-cart" class="close-cart">&times;</button>
+    </div>
+    <div class="cart-items">
+      <!-- Cart items will be added here dynamically -->
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <h4>Total: <span id="cart-total-price">0₺</span></h4>
+      </div>
+      <button class="checkout-btn">Checkout</button>
+    </div>
+  </div>
+
+  <!-- Cart Overlay -->
+  <div class="cart-overlay"></div>
+
+  <!-- NAVIGATION BAR -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light py-3 fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">Demo</a>
+      
+      <!-- Mobile Cart Toggle (visible only on mobile) -->
+      <div class="mobile-cart-toggle" id="mobile-cart-toggle">
+        <i class="fas fa-shopping-cart"></i>
+        <span id="mobile-cart-count" class="nav-cart-count">0</span>
+      </div>
+      
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span id="bar"><i class="fas fa-bars"></i></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto align-items-center">
+          <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#featured">Shop</a></li>
+          <li class="nav-item"><a class="nav-link" href="#footer">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="#footer">Contact Us</a></li>
+          <li class="nav-item">
+            <input
+              id="searchInput"
+              type="text"
+              placeholder="Search products..."
+              class="form-control"
+            />
+          </li>
+          <!-- Desktop Cart Toggle (visible only on desktop) -->
+          <li class="nav-item">
+            <div class="nav-cart-toggle" id="nav-cart-toggle">
+              <i class="fas fa-shopping-cart"></i>
+              <span id="nav-cart-count" class="nav-cart-count">0</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Rest of your HTML content remains the same -->
+  <section id="home" style="padding-top:80px;">
+    <div class="container">
+      <h5>NEW ARRIVALS</h5>
+      <h1><span>THE BEST</span> PRICES</h1>
+      <p>Small touches. Big differences</p>
+      <a href="#featured"><button>Shop Now</button></a>
+    </div>
+  </section>
+
+  <section id="new" class="w-100">
+    <div class="container">
+      <div class="row p-0 m-0">
+        <div class="one col-lg-4 col-md-12 col-12 p-0">
+          <img class="img-fluid" src="style/img/1.png" alt="" />
+          <div class="details">
+            <h2>CUPS</h2>
+            <a href="#featured"><button>Shop Now</button></a>
+          </div>
+        </div>
+        <div class="one col-lg-4 col-md-12 col-12 p-0">
+          <img class="img-fluid" src="style/img/2.png" alt="" />
+          <div class="details">
+            <h2>PANS</h2>
+            <a href="#featured"><button>Shop Now</button></a>
+          </div>
+        </div>
+        <div class="one col-lg-4 col-md-12 col-12 p-0">
+          <img class="img-fluid" src="style/img/3.png" alt="" />
+          <div class="details">
+            <h2>CUPS</h2>
+            <a href="#featured"><button>Shop Now</button></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTS SECTION -->
+  <section id="featured" class="my-5 pb-5">
+    <div class="container text-center mt-5 py-5">
+      <h3>Our featured</h3>
+      <hr class="mx-auto" />
+      <p>Here you can check out our new products with fair price on (business name)</p>
+      <p id="searchMessage" style="font-weight:bold; margin-top:1rem;"></p>
+    </div>
+    <div class="row mx-auto container-fluid" id="products-container"></div>
+  </section>
+
+  <footer id="footer" class="mt-5 py-5">
+    <div class="row container mx-auto pt-5">
+      <div class="footer-one col-lg-3 col-md-6 col-12"></div>
+      <div class="footer-one col-lg-3 col-md-6 col-12">
+        <h5 class="pb-2">Featured</h5>
+        <ul class="text-uppercase list-unstyled">
+          <li><a href="#featured">New Arrival</a></li>
+          <li><a href="#featured">Featured</a></li>
+          <li><a href="#featured">Sales</a></li>
+        </ul>
+      </div>
+      <div class="footer-one col-lg-3 col-md-6 col-12">
+        <h5 class="pb-2">Contact Us</h5>
+        <div>
+          <a href="https://www.instagram.com/yulla_sanat/" class="text-uppercase">Instagram</a>
+        </div>
+      </div>
+    </div>
+    <div class="copyright mt-5">
+      <div class="row container ml-auto">
+        <div class="col-lg-3 col-md-6 col-12 text-nowrap text-center">
+          <p>Business name © 2025 ALL RIGHTS RESERVED</p>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12">
+          <a href="https://www.instagram.com/yulla_sanat/"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Your Firebase config here
+    const firebaseConfig = {
+      apiKey: "AIzaSyBXeAK9VFEjRY2WVczcMiEsfNvzXKG4Azo",
+      authDomain: "e-commerce-294e3.firebaseapp.com",
+      projectId: "e-commerce-294e3",
+      storageBucket: "e-commerce-294e3.firebasestorage.app",
+      messagingSenderId: "356429192168",
+      appId: "1:356429192168:web:6099c96079cd28ed85e25d"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const productsContainer = document.getElementById("products-container");
+    const searchInput = document.getElementById("searchInput");
+    const featuredSection = document.getElementById("featured");
+    const searchMessage = document.getElementById("searchMessage");
+
+    // Cart elements
+    const cartSidebar = document.getElementById("cart-sidebar");
+    const navCartToggle = document.getElementById("nav-cart-toggle");
+    const mobileCartToggle = document.getElementById("mobile-cart-toggle");
+    const closeCartBtn = document.getElementById("close-cart");
+    const cartItemsContainer = document.querySelector(".cart-items");
+    const navCartCount = document.getElementById("nav-cart-count");
+    const mobileCartCount = document.getElementById("mobile-cart-count");
+    const cartTotalPrice = document.getElementById("cart-total-price");
+    const cartOverlay = document.querySelector(".cart-overlay");
+    const checkoutBtn = document.querySelector(".checkout-btn");
+
+    let allProducts = [];
+    let cart = [];
+
+    // Cart functionality
+    function toggleCart() {
+      cartSidebar.classList.toggle("open");
+      cartOverlay.classList.toggle("active");
+    }
+
+    navCartToggle.addEventListener("click", toggleCart);
+    mobileCartToggle.addEventListener("click", toggleCart);
+    closeCartBtn.addEventListener("click", toggleCart);
+    cartOverlay.addEventListener("click", toggleCart);
+
+    // Add to cart function
+    function addToCart(product) {
+      const existingItem = cart.find(item => item.id === product.id);
+      
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cart.push({
+          ...product,
+          quantity: 1
+        });
+      }
+      
+      updateCart();
+      toggleCart(); // Open cart when adding an item
+    }
+
+    // Remove from cart function
+    function removeFromCart(productId) {
+      cart = cart.filter(item => item.id !== productId);
+      updateCart();
+    }
+
+    // Update cart UI
+    function updateCart() {
+      cartItemsContainer.innerHTML = "";
+      
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = "<p>Your cart is empty</p>";
+      } else {
+        cart.forEach(item => {
+          const cartItem = document.createElement("div");
+          cartItem.className = "cart-item";
+          
+          const image = item.images && item.images.length > 0 ? item.images[0] : "default.jpg";
+          
+          cartItem.innerHTML = `
+            <img src="${image}" class="cart-item-img" alt="${item.title}">
+            <div class="cart-item-details">
+              <h6 class="cart-item-title">${item.title}</h6>
+              <p class="cart-item-price">${item.price}₺ x ${item.quantity}</p>
+              <button class="cart-item-remove" data-id="${item.id}">Remove</button>
+            </div>
+          `;
+          
+          cartItemsContainer.appendChild(cartItem);
+        });
+      }
+      
+      // Update cart count on both desktop and mobile
+      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+      navCartCount.textContent = totalItems;
+      mobileCartCount.textContent = totalItems;
+      
+      // Update total price
+      const totalPrice = cart.reduce((sum, item) => sum + (parseFloat(item.price) * item.quantity), 0);
+      cartTotalPrice.textContent = `${totalPrice.toFixed(2)}₺`;
+    }
+
+    // Handle remove item clicks
+    cartItemsContainer.addEventListener("click", (e) => {
+      if (e.target.classList.contains("cart-item-remove")) {
+        const productId = e.target.getAttribute("data-id");
+        removeFromCart(productId);
+      }
+    });
+
+    // Checkout button
+    checkoutBtn.addEventListener("click", () => {
+      alert("Checkout functionality would go here!");
+    });
+
+    // Load all products from Firestore once
+    function loadProducts() {
+      productsContainer.innerHTML = "";
+      searchMessage.textContent = "";
+      db.collection("products").onSnapshot(
+        (snapshot) => {
+          allProducts = [];
+          snapshot.forEach((doc) => {
+            allProducts.push({ id: doc.id, ...doc.data() });
+          });
+          displayProducts(allProducts);
+        },
+        (error) => {
+          console.error("Error loading products:", error);
+        }
+      );
+    }
+
+    // Display given products
+    function displayProducts(products) {
+      productsContainer.innerHTML = "";
+      if (products.length === 0) {
+        productsContainer.innerHTML = "<p>No products match your search.</p>";
+        return;
+      }
+      products.forEach((product, index) => {
+        const images =
+          product.images && product.images.length > 0
+            ? product.images
+            : ["default.jpg"];
+        const carouselId = `carousel-${index}`; // unique id per product
+
+        // If only one image, show just the image without carousel
+        if (images.length === 1) {
+          const productHTML = `
+            <div class="product text-center col-lg-3 col-md-4 col-12 mb-4">
+              <img src="${images[0]}" class="d-block w-100" alt="${product.title}" style="max-height:250px; object-fit:contain;" />
+              <h5 class="p-name mt-2">${product.title}</h5>
+              <p class="p-desc">${product.description || ""}</p>
+              <h4 class="p-price">${product.price}₺</h4>
+              <button class="add-to-cart" data-id="${product.id}">Add to Cart</button>
+            </div>
+          `;
+          productsContainer.insertAdjacentHTML("beforeend", productHTML);
+          return; // skip the carousel HTML
+        }
+
+        // For multiple images, build carousel HTML as before
+        const indicatorsHTML = images
+          .map(
+            (_, i) =>
+              `<li data-target="#${carouselId}" data-slide-to="${i}"${
+                i === 0 ? ' class="active"' : ""
+              }></li>`
+          )
+          .join("");
+
+        const itemsHTML = images
+          .map(
+            (imgSrc, i) =>
+              `<div class="carousel-item${i === 0 ? " active" : ""}">
+                <img src="${imgSrc}" class="d-block w-100" alt="${product.title} image ${
+                i + 1
+              }" style="max-height:250px; object-fit:contain;" />
+              </div>`
+          )
+          .join("");
+
+        const productHTML = `
+          <div class="product text-center col-lg-3 col-md-4 col-12 mb-4">
+            <div id="${carouselId}" class="carousel slide" data-ride="carousel" data-interval="false">
+              <ol class="carousel-indicators">
+                ${indicatorsHTML}
+              </ol>
+              <div class="carousel-inner">
+                ${itemsHTML}
+              </div>
+              <a class="carousel-control-prev" href="#${carouselId}" role="button" data-slide="prev" onclick="event.preventDefault()">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+              </a>
+              <a class="carousel-control-next" href="#${carouselId}" role="button" data-slide="next" onclick="event.preventDefault()">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+              </a>
+            </div>
+            <h5 class="p-name mt-2">${product.title}</h5>
+            <p class="p-desc">${product.description || ""}</p>
+            <h4 class="p-price">${product.price}₺</h4>
+            <button class="add-to-cart" data-id="${product.id}">Add to Cart</button>
+          </div>
+        `;
+        productsContainer.insertAdjacentHTML("beforeend", productHTML);
+      });
+
+      // Add event listeners to all "Add to Cart" buttons
+      document.querySelectorAll(".add-to-cart").forEach(button => {
+        button.addEventListener("click", (e) => {
+          const productId = e.target.getAttribute("data-id");
+          const product = allProducts.find(p => p.id === productId);
+          if (product) {
+            addToCart(product);
+          }
+        });
+      });
+    }
+
+    // Filter and scroll
+    function searchProducts(term) {
+      term = term.toLowerCase().trim();
+      if (term.length === 0) {
+        searchMessage.textContent = "";
+        displayProducts(allProducts);
+        return;
+      }
+      const filtered = allProducts.filter(
+        (p) =>
+          p.title && p.title.toLowerCase().includes(term) ||
+          (p.description && p.description.toLowerCase().includes(term))
+      );
+
+      searchMessage.textContent = `Showing results for "${term}" (${filtered.length} found)`;
+
+      featuredSection.scrollIntoView({ behavior: "smooth" });
+      displayProducts(filtered);
+    }
+
+    // Search input listener
+    searchInput.addEventListener("input", (e) => {
+      searchProducts(e.target.value);
+    });
+
+    window.onload = () => {
+      loadProducts();
+    };
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+</body>
+</html>
